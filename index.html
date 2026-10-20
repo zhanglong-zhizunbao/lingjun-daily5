@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>领军工程博士英语 · 每日5词做题</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(160deg,#eef3fb 0%,#f7f9fe 100%);color:#1f2a44;min-height:100vh;padding-bottom:60px}
+.wrap{max-width:720px;margin:0 auto;padding:14px 14px 80px}
+header{background:linear-gradient(135deg,#2c5fd0,#4a86f5);border-radius:18px;padding:18px 18px;color:#fff;box-shadow:0 8px 24px rgba(44,95,208,.25);margin-bottom:16px}
+header h1{font-size:19px;font-weight:700;letter-spacing:.5px}
+header .sub{margin-top:6px;font-size:13px;opacity:.92}
+header .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.tag{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 12px;font-size:12px}
+.card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 4px 16px rgba(31,42,68,.06);margin-bottom:14px}
+.card h2{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h2 .no{background:#2c5fd0;color:#fff;border-radius:8px;padding:2px 8px;font-size:13px}
+.q{margin-bottom:14px;padding:14px;border:1px solid #e6ebf5;border-radius:12px;background:#fafbfe}
+.q .qstem{font-size:14px;line-height:1.65;margin-bottom:10px}
+.q .qstem .blank{color:#2c5fd0;font-weight:700;background:#e8efff;padding:0 6px;border-radius:4px}
+.q .qtype{font-size:11px;color:#8a94ab;margin-bottom:4px}
+.opt{display:block;width:100%;text-align:left;background:#f4f7fd;border:1.5px solid #e0e7f4;border-radius:10px;padding:10px 12px;font-size:14px;margin-top:8px;cursor:pointer;transition:.15s;color:#1f2a44}
+.opt:active{transform:scale(.99)}
+.opt.sel{border-color:#2c5fd0;background:#e8efff}
+.opt.right{border-color:#22a06b;background:#e6f7ef}
+.opt.wrong{border-color:#d64545;background:#fdeaea}
+.opt .k{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;background:#e0e7f4;border-radius:6px;font-weight:600;font-size:12px;margin-right:8px;vertical-align:middle}
+.opt.sel .k{background:#2c5fd0;color:#fff}
+.fb{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.6}
+.fb.ok{display:block;background:#e6f7ef;color:#146a45;border:1px solid #b7e5cd}
+.fb.no{display:block;background:#fdeaea;color:#a12c2c;border:1px solid #f3c1c1}
+.fb b{display:block;margin-bottom:4px}
+.btnrow{display:flex;gap:10px;margin-top:6px}
+.btn{flex:1;background:#2c5fd0;color:#fff;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(44,95,208,.3)}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:#fff;color:#2c5fd0;border:1.5px solid #2c5fd0;box-shadow:none}
+.result{border-radius:14px;padding:16px;margin-top:14px;text-align:center}
+.result.good{background:#e6f7ef;border:1px solid #b7e5cd}
+.result.bad{background:#fdeaea;border:1px solid #f3c1c1}
+.result .big{font-size:30px;font-weight:800;color:#1f2a44}
+.result .txt{margin-top:6px;font-size:14px;color:#47536b}
+.review{background:linear-gradient(135deg,#7a4fd0,#9a6cf5);border-radius:16px;padding:16px;color:#fff;box-shadow:0 8px 24px rgba(122,79,208,.25);margin-bottom:14px}
+.review h2{font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.review .cnt{margin-top:6px;font-size:13px;opacity:.95}
+.review .empty{margin-top:8px;font-size:13px;opacity:.85}
+.legend{font-size:12px;color:#8a94ab;margin-top:10px;text-align:center;line-height:1.7}
+footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid #eee;padding:10px 16px;font-size:12px;color:#8a94ab;text-align:center;z-index:50}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📚 领军工程博士英语 · 每日5词</h1>
+    <div class="sub" id="todayInfo">加载中…</div>
+    <div class="tags">
+      <span class="tag">每天5个相近词</span>
+      <span class="tag">辨析选择题</span>
+      <span class="tag">错题7天复习</span>
+    </div>
+  </header>
+
+  <div id="reviewBox"></div>
+
+  <div class="card">
+    <h2><span class="no">今日</span><span id="dayLabel">—</span></h2>
+    <div id="questions"></div>
+    <div class="btnrow">
+      <button class="btn" id="submitBtn" onclick="submit()">提交判分</button>
+      <button class="btn ghost" onclick="resetToday()">重做今日</button>
+    </div>
+    <div id="result"></div>
+    <div class="legend">🔄 做错的题会在 <b>7 天后</b>自动出现在顶部「错题复习」区，直到你做对为止。</div>
+  </div>
+</div>
+
+<footer>领军工程博士英语 · 错题 7 天滚动复习 · 坚持每天 5 词</footer>
+
+<script>window.VOCAB=[{"theme": "重要 / 显著类词汇", "words": [{"word": "significant", "ph": "/sɪɡˈnɪfɪkənt/", "df": "重要的；有意义的", "ex": "The clinical trial showed significant improvement in patient outcomes.", "note": "强调具有重要意义的、值得关注的，常与 improvement/difference/impact 搭配。比 important 更正式。"}, {"word": "substantial", "ph": "/səbˈstænʃl/", "df": "大量的；实质的", "ex": "The company made a substantial investment in R&D.", "note": "强调数量/程度大，常修饰 amount/number/investment/funding 等量化词。"}, {"word": "considerable", "ph": "/kənˈsɪdərəbl/", "df": "相当多的；可观的", "ex": "Considerable progress has been made in nanotechnology.", "note": "强调程度大到值得注意，介于 significant 和 substantial 之间，多修饰 progress/success/effort。"}, {"word": "remarkable", "ph": "/rɪˈmɑːkəbl/", "df": "非凡的；引人注目的", "ex": "The new material exhibits remarkable strength-to-weight ratio.", "note": "强调因出众而引人注目，带褒义，比 significant 程度更强。"}, {"word": "notable", "ph": "/ˈnəʊtəbl/", "df": "值得注意的；显著的", "ex": "The study's most notable finding was the correlation between sleep and cognitive function.", "note": "强调值得特别指出/记录，比 significant 语气弱，常用于引出具体结果。"}]}, {"theme": "方法 / 途径类词汇", "words": [{"word": "approach", "ph": "/əˈprəʊtʃ/", "df": "方法；途径", "ex": "A multidisciplinary approach is necessary to solve complex engineering problems.", "note": "最通用的'方法'，强调处理问题的角度/思路。搭配：approach to (doing) sth。"}, {"word": "methodology", "ph": "/ˌmeθəˈdɒlədʒi/", "df": "方法论；方法体系", "ex": "The research methodology combines quantitative and qualitative analysis.", "note": "比 method 更系统，指一整套方法体系。学术论文中常出现在 Methodology 章节。"}, {"word": "technique", "ph": "/tekˈniːk/", "df": "技术；技巧", "ex": "This novel imaging technique enables visualization of cellular activity.", "note": "侧重具体操作层面上的技巧/技术，需要专门训练才能掌握。"}, {"word": "strategy", "ph": "/ˈstrætədʒi/", "df": "策略；战略", "ex": "The company's market entry strategy focused on regulatory-first markets.", "note": "强调为实现长期目标而制定的整体策略规划，比 approach 更偏宏观和前瞻。"}, {"word": "tactic", "ph": "/ˈtæktɪk/", "df": "战术；具体手段", "ex": "Targeted drug delivery is a key tactic in cancer treatment.", "note": "比 strategy 更具体/短期，是为实现策略而采取的具体手段。"}]}, {"theme": "分析 / 评估类词汇", "words": [{"word": "analyze", "ph": "/ˈænəlaɪz/", "df": "分析；分解", "ex": "The team analyzed the experimental data using statistical methods.", "note": "最通用的'分析'，指将整体分解为部分进行系统研究。强调方法性。"}, {"word": "evaluate", "ph": "/ɪˈvæljueɪt/", "df": "评估；评价", "ex": "The device's performance was evaluated under simulated clinical conditions.", "note": "强调判断价值/优劣/效果，通常有明确的标准或指标。"}, {"word": "assess", "ph": "/əˈses/", "df": "评估；评定", "ex": "Researchers assessed the toxicity of the new compound.", "note": "比 evaluate 更侧重'测定程度/数量/风险'，常用于风险评估。"}, {"word": "examine", "ph": "/ɪɡˈzæmɪn/", "df": "检查；审视", "ex": "The researchers examined the tissue samples under an electron microscope.", "note": "强调仔细/近距离地看或检查。"}, {"word": "quantify", "ph": "/ˈkwɒntɪfaɪ/", "df": "量化；定量", "ex": "It is difficult to quantify the long-term environmental impact.", "note": "将抽象概念转化为具体数字。学术写作高频词。"}]}, {"theme": "创新 / 发展类词汇", "words": [{"word": "innovate", "ph": "/ˈɪnəveɪt/", "df": "创新；革新", "ex": "Companies must continuously innovate to remain competitive in the medical device market.", "note": "强调引入新方法/新思路。比 create 更具突破性。"}, {"word": "pioneer", "ph": "/ˌpaɪəˈnɪə(r)/", "df": "开创；倡导", "ex": "The hospital pioneered the use of robotic surgery in cardiac procedures.", "note": "强调首次做某事，开路先锋的角色。"}, {"word": "devise", "ph": "/dɪˈvaɪz/", "df": "设计；发明", "ex": "The team devised a novel approach to targeted drug delivery.", "note": "强调经过思考/筹划后设计出，常用于方法/方案/系统。"}, {"word": "revolutionize", "ph": "/ˌrevəˈluːʃənaɪz/", "df": "彻底变革；革命化", "ex": "CRISPR technology has revolutionized genetic engineering.", "note": "语气最强，强调带来根本性、颠覆性的变革。"}, {"word": "evolve", "ph": "/ɪˈvɒlv/", "df": "演变；进化", "ex": "The device design evolved over several iterations to improve patient comfort.", "note": "强调逐渐持续的变化过程。"}]}, {"theme": "新材料科技与应用 (New Materials Science and Applications)", "words": [{"word": "composite", "ph": "/kəmˈpɒzɪt/", "df": "复合材料\n复合的", "ex": "Carbon fiber composites offer superior strength-to-weight ratios.", "note": "多种材料组合而成，性能优于单一材料"}, {"word": "polymer", "ph": "/ˈpɒlɪmə(r)/", "df": "聚合物", "ex": "Polymers are widely used in lightweight structural components.", "note": "由重复单体组成的大分子材料"}, {"word": "alloy", "ph": "/ˈælɔɪ/", "df": "合金", "ex": "Titanium alloys maintain strength at high temperatures.", "note": "两种以上金属熔合的固体材料"}, {"word": "ceramic", "ph": "/səˈræmɪk/", "df": "陶瓷", "ex": "Advanced ceramics resist extreme heat and wear.", "note": "无机非金属材料，耐高温/硬度高"}, {"word": "synthesize", "ph": "/ˈsɪnθəsaɪz/", "df": "合成", "ex": "The team synthesized a novel nanocomposite material.", "note": "将元素/化合物组合制备新物质"}]}, {"theme": "航空航天工程 (Aerospace Engineering and Space Exploration)", "words": [{"word": "propulsion", "ph": "/prəˈpʌlʃn/", "df": "推进；推进力", "ex": "Electric propulsion systems are used in satellite station-keeping.", "note": "特指产生推力使飞行器运动的系统"}, {"word": "thrust", "ph": "/θrʌst/", "df": "推力", "ex": "The rocket engine generates 500 kN of thrust.", "note": "发动机产生的向前推力量化值"}, {"word": "aerodynamic", "ph": "/ˌeərəʊdaɪˈnæmɪk/", "df": "空气动力学的", "ex": "The aerodynamic design reduces drag by 15%.", "note": "专指与空气流动相关的力学特性"}, {"word": "launch", "ph": "/lɔːntʃ/", "df": "发射", "ex": "The satellite was launched into geostationary orbit.", "note": "火箭/航天器从地面升空的过程"}, {"word": "orbit", "ph": "/ˈɔːbɪt/", "df": "轨道；绕轨道运行", "ex": "The space station orbits Earth at ~400 km altitude.", "note": "天体或航天器绕另一天体的运行路径"}]}, {"theme": "智慧城市与基础设施 (Smart Cities and Infrastructure)", "words": [{"word": "integrated", "ph": "/ˈɪntɪɡreɪtɪd/", "df": "集成的；综合的", "ex": "The integrated traffic system optimizes real-time signal timing.", "note": "强调多子系统协同工作"}, {"word": "smart", "ph": "/smɑːt/", "df": "智能的", "ex": "Smart grid enables two-way communication with consumers.", "note": "数字化感知/分析/决策能力"}, {"word": "automated", "ph": "/ˈɔːtəmeɪtɪd/", "df": "自动化的", "ex": "Automated waste collection reduces operational costs.", "note": "无需人工干预的自动运行"}, {"word": "digital", "ph": "/ˈdɪdʒɪtl/", "df": "数字的；数字化的", "ex": "Digital twin technology simulates city infrastructure in real time.", "note": "基于数字/数据的特征"}, {"word": "infrastructure", "ph": "/ˈɪnfrəstrʌktʃə(r)/", "df": "基础设施", "ex": "Smart infrastructure integrates sensors and communication networks.", "note": "支撑城市运行的基础设施体系"}]}, {"theme": "交通工程与高铁 (Transportation Engineering and High-Speed Rail)", "words": [{"word": "transportation", "ph": "/ˌtrænspɔːˈteɪʃn/", "df": "运输；交通", "ex": "High-speed rail is a sustainable mode of mass transportation.", "note": "泛指人员/货物的运输系统"}, {"word": "transit", "ph": "/ˈtrænzɪt/", "df": "公共交通；中转", "ex": "Rapid transit systems reduce urban traffic congestion.", "note": "特指城市公共交通运输"}, {"word": "logistics", "ph": "/ləˈdʒɪstɪks/", "df": "物流", "ex": "Integrated logistics networks enable efficient freight movement.", "note": "货物从供应地到需求地的流动管理"}, {"word": "corridor", "ph": "/ˈkɒrɪdɔː(r)/", "df": "走廊；通道", "ex": "The Beijing-Shanghai high-speed rail corridor carries millions annually.", "note": "连接两地的线性交通通道"}, {"word": "velocity", "ph": "/vəˈlɒsəti/", "df": "速度", "ex": "The train reaches a maximum velocity of 350 km/h.", "note": "物理上的速度（常为高速场景）"}]}, {"theme": "6G通信与网络 (6G Communications and Network Technology)", "words": [{"word": "communication", "ph": "/kəˌmjuːnɪˈkeɪʃn/", "df": "通信", "ex": "6G communication aims for terabit-per-second data rates.", "note": "信息传输/交换的过程和系统"}, {"word": "transmit", "ph": "/trænzˈmɪt/", "df": "传输；发射", "ex": "Terahertz waves transmit data at unprecedented speeds.", "note": "将信号/数据从一个点发送到另一个点"}, {"word": "latency", "ph": "/ˈleɪtənsi/", "df": "延迟；时延", "ex": "Ultra-low latency is critical for real-time applications.", "note": "数据从发送到接收的时间差"}, {"word": "modulate", "ph": "/ˈmɒdjuleɪt/", "df": "调制", "ex": "Advanced modulation schemes improve spectral efficiency.", "note": "改变载波信号的参数以携带信息"}, {"word": "spectrum", "ph": "/ˈspektrəm/", "df": "频谱", "ex": "Millimeter-wave spectrum offers abundant bandwidth for 5G/6G.", "note": "电磁波的频率范围"}]}, {"theme": "机器人技术 (Robotics and Autonomous Systems)", "words": [{"word": "sensor", "ph": "/ˈsensə(r)/", "df": "传感器", "ex": "Force-torque sensors allow robots to detect physical contact.", "note": "检测环境物理量的装置"}, {"word": "actuator", "ph": "/ˈæktʃueɪtə(r)/", "df": "执行器；作动器", "ex": "Precision actuators enable accurate robotic movements.", "note": "将电信号转化为物理运动的装置"}, {"word": "feedback", "ph": "/ˈfiːdbæk/", "df": "反馈", "ex": "Real-time feedback from sensors enables adaptive control.", "note": "将输出信号返回输入端形成闭环"}, {"word": "calibration", "ph": "/ˌkælɪˈbreɪʃn/", "df": "校准", "ex": "Regular calibration ensures sensor accuracy.", "note": "调整测量系统使其符合标准的过程"}, {"word": "manipulator", "ph": "/məˈnɪpjuleɪtə(r)/", "df": "机械臂；操纵器", "ex": "The robotic manipulator has six degrees of freedom.", "note": "用于抓取/操作物体的机械装置"}]}, {"theme": "量子计算与信息 (Quantum Computing and Information)", "words": [{"word": "quantum", "ph": "/ˈkwɒntəm/", "df": "量子；量子化的", "ex": "Quantum computers leverage superposition and entanglement.", "note": "物理量离散化的最小单位"}, {"word": "superposition", "ph": "/ˌsuːpəpəˈzɪʃn/", "df": "叠加态", "ex": "A qubit in superposition exists as both 0 and 1 simultaneously.", "note": "量子比特可同时处于多种状态"}, {"word": "entanglement", "ph": "/ɪnˈtæŋɡlmənt/", "df": "纠缠；量子纠缠", "ex": "Entanglement allows correlation between distant qubits.", "note": "量子粒子间非局域的相关性"}, {"word": "coherence", "ph": "/kəʊˈhɪərəns/", "df": "相干性", "ex": "Maintaining coherence is critical for quantum computation.", "note": "量子系统保持量子态的持续时间"}, {"word": "qubit", "ph": "/ˈkjuːbɪt/", "df": "量子比特", "ex": "100 qubits can outperform any classical computer.", "note": "量子计算的基本信息单元"}]}, {"theme": "纳米技术与精密工程 (Nanotechnology and Precision Engineering)", "words": [{"word": "nanoscale", "ph": "/ˈnænəʊskeɪl/", "df": "纳米尺度", "ex": "Materials at the nanoscale exhibit unique quantum effects.", "note": "1-100纳米范围的尺寸等级"}, {"word": "nanoparticle", "ph": "/ˈnænəʊpɑːtɪkl/", "df": "纳米颗粒", "ex": "Gold nanoparticles are used in targeted drug delivery.", "note": "至少一维在1-100nm的颗粒"}, {"word": "nanowire", "ph": "/ˈnænəʊwaɪə(r)/", "df": "纳米线", "ex": "Silicon nanowires serve as building blocks for transistors.", "note": "直径纳米级一维结构"}, {"word": "quantum dot", "ph": "", "df": "量子点", "ex": "Quantum dots emit light at specific wavelengths depending on size.", "note": "纳米半导体晶体，尺寸可调光学特性"}, {"word": "lithography", "ph": "/lɪˈθɒɡrəfi/", "df": "光刻", "ex": "EUV lithography enables 3nm chip fabrication.", "note": "将电路图案转移到晶圆的微纳加工技术"}]}, {"theme": "人工智能与机器学习 (AI and Machine Learning)", "words": [{"word": "neural network", "ph": "/ˈnjʊərəl ˈnetwɜːk/", "df": "神经网络", "ex": "Deep neural networks have achieved remarkable performance in image recognition.", "note": "模仿生物神经元结构的计算模型，深度学习的核心"}, {"word": "deep learning", "ph": "/diːp ˈlɜːnɪŋ/", "df": "深度学习", "ex": "Deep learning leverages multi-layered neural networks for feature extraction.", "note": "使用多层神经网络的机器学习方法"}, {"word": "backpropagation", "ph": "/ˌbækprɒpəˈɡeɪʃn/", "df": "反向传播", "ex": "Backpropagation computes gradients for network weight updates.", "note": "神经网络训练的核心算法，通过链式法则计算梯度"}, {"word": "convolution", "ph": "/ˌkɒnvəˈluːʃn/", "df": "卷积", "ex": "Convolutional layers extract spatial features from input data.", "note": "CNN的核心操作，擅长处理网格结构数据如图像"}, {"word": "transformer", "ph": "/trænsˈfɔːmə(r)/", "df": "Transformer模型", "ex": "The transformer architecture revolutionized natural language processing.", "note": "基于自注意力机制的模型架构，LLM的基础"}]}, {"theme": "脑机接口 (Brain-Computer Interfaces)", "words": [{"word": "brain-computer interface", "ph": "/breɪn kəmˈpjuːtə(r) ˈɪntəfeɪs/", "df": "脑机接口", "ex": "Brain-computer interfaces enable direct communication between the brain and external devices.", "note": "BCI建立人脑与外部设备之间的直接通信通道"}, {"word": "neuroprosthetics", "ph": "/ˌnjʊərəʊprɒsˈθetɪks/", "df": "神经假体", "ex": "Neuroprosthetics restore lost sensory or motor function through neural interfaces.", "note": "替代或修复受损神经功能的植入式设备"}, {"word": "electroencephalography", "ph": "/ɪˌlektrəʊenˌsefəˈlɒɡrəfi/", "df": "脑电图", "ex": "EEG measures electrical activity from the scalp for non-invasive BCI.", "note": "非侵入式记录大脑电活动的方法"}, {"word": "implant", "ph": "/ˈɪmplɑːnt/", "df": "植入物", "ex": "Neural implants with microelectrode arrays record signals from individual neurons.", "note": "植入体内的电子设备"}, {"word": "decoding", "ph": "/ˌdiːˈkəʊdɪŋ/", "df": "解码", "ex": "Neural decoding algorithms translate brain signals into commands.", "note": "从神经信号中提取意图信息的过程"}]}, {"theme": "新能源汽车与电池技术 (New Energy Vehicles and Battery Technology)", "words": [{"word": "lithium-ion battery", "ph": "/ˈlɪθiəm ˈaɪən ˈbætəri/", "df": "锂离子电池", "ex": "Lithium-ion batteries power most modern electric vehicles.", "note": "目前最主流的电动汽车动力电池技术"}, {"word": "solid-state battery", "ph": "/ˈsɒlɪd steɪt ˈbætəri/", "df": "固态电池", "ex": "Solid-state batteries promise higher energy density and improved safety.", "note": "使用固态电解质替代液态电解液的下一代电池技术"}, {"word": "energy density", "ph": "/ˈenədʒi ˈdensəti/", "df": "能量密度", "ex": "Increasing energy density extends the driving range of EVs.", "note": "单位重量或体积储存的能量"}, {"word": "thermal runaway", "ph": "/ˈθɜːml ˈrʌnəweɪ/", "df": "热失控", "ex": "Thermal runaway is a critical safety concern in lithium-ion batteries.", "note": "电池温度失控升高导致起火或爆炸的现象"}, {"word": "regenerative braking", "ph": "/rɪˈdʒenərətɪv ˈbreɪkɪŋ/", "df": "再生制动", "ex": "Regenerative braking recovers kinetic energy during deceleration.", "note": "将制动能量转化为电能回充电池的技术"}]}, {"theme": "储能技术 (Energy Storage Technology)", "words": [{"word": "electrochemical", "ph": "/ɪˌlektrəʊˈkemɪkl/", "df": "电化学的", "ex": "Electrochemical storage converts electrical energy into chemical energy.", "note": "涉及电化学反应的能量转换过程"}, {"word": "pumped hydro", "ph": "/pʌmpt ˈhaɪdrəʊ/", "df": "抽水蓄能", "ex": "Pumped hydro storage accounts for over 90% of global energy storage capacity.", "note": "利用高低水位差储存势能的大规模储能方式"}, {"word": "flow battery", "ph": "/fləʊ ˈbætəri/", "df": "液流电池", "ex": "Vanadium flow batteries offer scalable, long-duration energy storage.", "note": "电解液储存于外部储罐中、可独立扩容的电池"}, {"word": "grid-scale", "ph": "/ɡrɪd skeɪl/", "df": "电网级", "ex": "Grid-scale storage balances intermittent renewable energy generation.", "note": "能够支持电网运行的大规模储能系统"}, {"word": "round-trip efficiency", "ph": "/raʊnd trɪp ɪˈfɪʃnsi/", "df": "往返效率", "ex": "Lithium-ion batteries achieve round-trip efficiency above 90%.", "note": "存储并释放的能量与输入能量的比率"}]}, {"theme": "生物制造与合成生物学 (Synthetic Biology and Biomanufacturing)", "words": [{"word": "synthetic biology", "ph": "/sɪnˈθetɪk baɪˈɒlədʒi/", "df": "合成生物学", "ex": "Synthetic biology engineers biological systems for useful applications.", "note": "将工程原理应用于生物系统设计的交叉学科"}, {"word": "gene editing", "ph": "/dʒiːn ˈedɪtɪŋ/", "df": "基因编辑", "ex": "CRISPR-Cas9 has revolutionized gene editing with unprecedented precision.", "note": "精确修改生物体DNA序列的技术"}, {"word": "fermentation", "ph": "/ˌfɜːmenˈteɪʃn/", "df": "发酵", "ex": "Industrial fermentation produces chemicals, fuels, and pharmaceuticals.", "note": "利用微生物将底物转化为目标产物的生化过程"}, {"word": "bioreactor", "ph": "/ˌbaɪəʊriˈæktə(r)/", "df": "生物反应器", "ex": "Stainless steel bioreactors maintain optimal conditions for cell growth.", "note": "为微生物或细胞提供受控生长环境的装置"}, {"word": "metabolic engineering", "ph": "/ˌmetəˈbɒlɪk ˌendʒɪˈnɪərɪŋ/", "df": "代谢工程", "ex": "Metabolic engineering optimizes cellular pathways for product synthesis.", "note": "改造细胞代谢网络以高效生产目标化合物的技术"}]}, {"theme": "量子计算与量子技术 (Quantum Computing and Quantum Technology)", "words": [{"word": "qubit", "ph": "/ˈkjuːbɪt/", "df": "量子比特", "ex": "Superconducting qubits are the most widely used platform for quantum computing.", "note": "量子计算的基本信息单元"}, {"word": "superposition", "ph": "/ˌsuːpəpəˈzɪʃn/", "df": "叠加态", "ex": "A qubit in superposition can represent both 0 and 1 simultaneously.", "note": "量子系统同时处于多个状态的特性"}, {"word": "entanglement", "ph": "/ɪnˈtæŋɡlmənt/", "df": "纠缠", "ex": "Entanglement enables quantum correlations that have no classical counterpart.", "note": "量子粒子间非局域的关联特性"}, {"word": "decoherence", "ph": "/ˌdiːkəʊˈhɪərəns/", "df": "退相干", "ex": "Decoherence is the primary obstacle to building practical quantum computers.", "note": "量子态与环境相互作用而失去相干性的过程"}, {"word": "quantum gate", "ph": "/ˈkwɒntəm ɡeɪt/", "df": "量子门", "ex": "Quantum gates perform unitary operations on qubits.", "note": "量子电路中操控量子比特的基本操作"}]}, {"theme": "氢能与核聚变能源 (Hydrogen Energy and Nuclear Fusion)", "words": [{"word": "electrolysis", "ph": "/ɪˌlekˈtrɒləsɪs/", "df": "电解", "ex": "Proton exchange membrane electrolysis produces green hydrogen from water.", "note": "利用电能将水分解为氢气和氧气的过程"}, {"word": "fuel cell", "ph": "/ˈfjuːəl sel/", "df": "燃料电池", "ex": "Hydrogen fuel cells convert chemical energy directly into electricity.", "note": "将氢气和氧气的化学能转化为电能的装置"}, {"word": "proton exchange membrane", "ph": "/ˈprəʊtɒn ɪksˈtʃeɪndʒ ˈmembreɪn/", "df": "质子交换膜", "ex": "PEM fuel cells operate at low temperatures and high power density.", "note": "PEM是燃料电池和电解槽中的核心膜材料"}, {"word": "plasma", "ph": "/ˈplæzmə/", "df": "等离子体", "ex": "Fusion reactions require confining hydrogen plasma at over 100 million degrees.", "note": "物质第四态，由自由电子和离子组成的高温电离气体"}, {"word": "tokamak", "ph": "/ˈtəʊkəmæk/", "df": "托卡马克", "ex": "ITER is the world's largest tokamak fusion experiment under construction.", "note": "利用磁场约束等离子体的环形聚变装置"}]}, {"theme": "具身智能与人形机器人 (Embodied Intelligence and Humanoid Robots)", "words": [{"word": "embodied intelligence", "ph": "/ɪmˈbɒdid ɪnˈtelɪdʒəns/", "df": "具身智能", "ex": "Embodied intelligence integrates AI with physical robotic bodies.", "note": "强调智能体通过与物理世界交互来学习和推理的AI范式"}, {"word": "humanoid", "ph": "/ˈhjuːmənɔɪd/", "df": "人形机器人", "ex": "Humanoid robots are designed to operate in human-centric environments.", "note": "具有类人外形和运动能力的机器人"}, {"word": "actuator", "ph": "/ˈæktʃueɪtə(r)/", "df": "执行器", "ex": "High-torque electric actuators enable fluid humanoid motion.", "note": "将电信号转化为物理运动的驱动装置"}, {"word": "imitation learning", "ph": "/ˌɪmɪˈteɪʃn ˈlɜːnɪŋ/", "df": "模仿学习", "ex": "Imitation learning allows robots to acquire skills by observing human demonstrations.", "note": "从专家示范中学习策略的方法"}, {"word": "dexterity", "ph": "/dekˈsterəti/", "df": "灵巧性", "ex": "Robotic dexterity with multi-fingered hands remains a major challenge.\\�机器人多指手的灵巧性仍然是一个重大挑战。", "note": "手或机械手精细操作物体的能力"}]}, {"theme": "6G通信技术 (6G Communication Technology)", "words": [{"word": "terahertz", "ph": "/ˈterəhɜːts/", "df": "太赫兹", "ex": "Terahertz frequencies between 0.1-10 THz are key for 6G.", "note": "6G将使用的极高频率电磁波"}, {"word": "massive MIMO", "ph": "/ˈmæsɪv ˈmaɪməʊ/", "df": "大规模MIMO", "ex": "Massive MIMO uses hundreds of antenna elements for beamforming.", "note": "使用大量天线阵列的多输入多输出技术"}, {"word": "reconfigurable intelligent surface", "ph": "/riːkənˈfɪɡərəbl ɪnˈtelɪdʒənt ˈsɜːfɪs/", "df": "可重构智能表面", "ex": "RIS dynamically controls the propagation environment to improve signal coverage.", "note": "通过可调超表面主动控制无线传播环境的新技术"}, {"word": "network slicing", "ph": "/ˈnetwɜːk ˈslaɪsɪŋ/", "df": "网络切片", "ex": "Network slicing creates isolated virtual networks for different use cases.", "note": "在同一物理网络上划分多个逻辑网络的技术"}, {"word": "ultra-reliable low-latency", "ph": "/ˈʌltrə rɪˈlaɪəbl ləʊ ˈleɪtənsi/", "df": "超可靠低延迟", "ex": "URLLC is essential for mission-critical applications like remote surgery.", "note": "6G承诺提供微秒级延迟和99.99999%可靠性的通信"}]}, {"theme": "低空经济与无人机 (Low-Altitude Economy and UAV)", "words": [{"word": "unmanned aerial vehicle", "ph": "/ʌnˈmænd ˈeəriəl ˈviːɪkl/", "df": "无人机", "ex": "UAVs are increasingly used for logistics, surveying, and agriculture.", "note": "无人驾驶飞机系统的基础平台"}, {"word": "eVTOL", "ph": "/ˈiː viː tɒl/", "df": "电动垂直起降飞行器", "ex": "eVTOL aircraft promise urban air mobility with zero emissions.", "note": "电动垂直起降飞行器，城市空中交通的核心"}, {"word": "air traffic management", "ph": "/eə(r) ˈtræfɪk ˈmænɪdʒmənt/", "df": "空中交通管理", "ex": "UTM systems manage low-altitude drone traffic safely and efficiently.", "note": "针对低空空域无人机交通的管理系统"}, {"word": "autonomous navigation", "ph": "/ɔːˈtɒnəməs ˌnævɪˈɡeɪʃn/", "df": "自主导航", "ex": "Autonomous navigation enables drones to follow optimized flight paths.", "note": "无需人工干预的自主飞行规划与控制"}, {"word": "geofencing", "ph": "/ˈdʒiːəʊfensɪŋ/", "df": "地理围栏", "ex": "Geofencing prevents drones from entering restricted airspace.", "note": "通过在虚拟边界创建电子屏障限制飞行区域"}]}, {"theme": "碳中和与碳捕集 (Carbon Neutrality and CCUS)", "words": [{"word": "carbon capture", "ph": "/ˈkɑːbən ˈkæptʃə(r)/", "df": "碳捕集", "ex": "Carbon capture technology removes CO₂ from industrial emission sources.", "note": "从排放源或大气中分离和捕集二氧化碳的技术"}, {"word": "CCUS", "ph": "/siː siː juː es/", "df": "碳捕集利用与封存", "ex": "CCUS is considered essential for achieving net-zero emissions in heavy industry.", "note": "碳捕集、利用与封存的全链条技术体系"}, {"word": "sequestration", "ph": "/ˌsiːkwəˈstreɪʃn/", "df": "封存", "ex": "Geological sequestration stores CO₂ in deep underground formations.", "note": "将捕集的CO₂长期储存于地下地质结构中"}, {"word": "net-zero", "ph": "/net ˈzɪərəʊ/", "df": "净零排放", "ex": "China aims to achieve carbon neutrality by 2060 and net-zero emissions.", "note": "温室气体排放量与清除量达到平衡的状态"}, {"word": "carbon footprint", "ph": "/ˈkɑːbən ˈfʊtprɪnt/", "df": "碳足迹", "ex": "Lifecycle assessment measures the total carbon footprint of a product.", "note": "产品/活动在整个生命周期中产生的碳排放总量"}]}, {"theme": "智慧水利与海洋工程 (Smart Water Resources and Ocean Engineering)", "words": [{"word": "hydrology", "ph": "/haɪˈdrɒlədʒi/", "df": "水文学", "ex": "Hydrological modeling predicts river flows and flood risks.", "note": "研究水循环及其分布的科学"}, {"word": "desalination", "ph": "/ˌdiːsælɪˈneɪʃn/", "df": "海水淡化", "ex": "Reverse osmosis desalination provides fresh water from seawater.", "note": "去除海水中盐分以生产淡水的技术"}, {"word": "subsea", "ph": "/ˌsʌbˈsiː/", "df": "海底/水下", "ex": "Subsea engineering enables oil and gas production on the seafloor.", "note": "涉及海底或水下的工程技术"}, {"word": "offshore", "ph": "/ˌɒfˈʃɔː(r)/", "df": "离岸/海上", "ex": "Offshore wind farms generate renewable energy in marine environments.", "note": "位于海岸线以外的海洋环境中的工程设施"}, {"word": "autonomous underwater vehicle", "ph": "/ɔːˈtɒnəməs ˌʌndəˈwɔːtə(r) ˈviːɪkl/", "df": "自主水下航行器", "ex": "AUVs map the seafloor and inspect underwater infrastructure.", "note": "无需人工操控的自主水下机器人"}]}, {"theme": "先进制造与工业4.0 (Advanced Manufacturing and Industry 4.0)", "words": [{"word": "additive manufacturing", "ph": "/ˈædətɪv ˌmænjuˈfæktʃərɪŋ/", "df": "增材制造", "ex": "Additive manufacturing builds parts layer by layer from digital models.", "note": "3D打印的技术术语，与传统减材制造相对"}, {"word": "digital twin", "ph": "/ˈdɪdʒɪtl twɪn/", "df": "数字孪生", "ex": "Digital twins simulate production lines to optimize manufacturing processes.", "note": "物理系统的虚拟镜像，用于仿真和优化"}, {"word": "cyber-physical system", "ph": "/ˈsaɪbə(r) ˈfɪzɪkl ˈsɪstəm/", "df": "信息物理系统", "ex": "CPS integrates computation, networking, and physical processes.", "note": "计算与物理过程深度融合的系统"}, {"word": "industrial IoT", "ph": "/ɪnˈdʌstriəl aɪ əʊ tiː/", "df": "工业物联网", "ex": "IIoT connects machines and sensors for real-time production monitoring.", "note": "制造业中互联传感器和设备的网络"}, {"word": "computer numerical control", "ph": "/kəmˈpjuːtə(r) njuːˈmerɪkl kənˈtrəʊl/", "df": "计算机数控", "ex": "CNC machines execute precision machining with micron-level accuracy.", "note": "通过计算机程序控制机床的自动化加工技术"}]}, {"theme": "集成电路与芯片技术 (Integrated Circuits and Chip Technology)", "words": [{"word": "semiconductor", "ph": "/ˌsemikənˈdʌktə(r)/", "df": "半导体", "ex": "Silicon is the most widely used semiconductor material.", "note": "导电性介于导体和绝缘体之间的材料"}, {"word": "lithography", "ph": "/lɪˈθɒɡrəfi/", "df": "光刻", "ex": "EUV lithography enables patterning at 3-nanometer node.", "note": "在晶圆上转移电路图案的核心工艺"}, {"word": "wafer", "ph": "/ˈweɪfə(r)/", "df": "晶圆", "ex": "A 300mm silicon wafer can yield hundreds of processor chips.", "note": "用于制造集成电路的薄圆形半导体基片"}, {"word": "transistor density", "ph": "/trænˈzɪstə ˈdensəti/", "df": "晶体管密度", "ex": "Higher transistor density enables more powerful processors.", "note": "单位面积集成的晶体管数量"}, {"word": "die", "ph": "/daɪ/", "df": "芯片裸片", "ex": "Each wafer is diced into individual dies for packaging.", "note": "从晶圆上切割下来的单个集成电路芯片"}]}, {"theme": "环境工程与生态修复 (Environmental Engineering and Ecological Restoration)", "words": [{"word": "bioremediation", "ph": "/ˌbaɪəʊrɪˌmiːdiˈeɪʃn/", "df": "生物修复", "ex": "Bioremediation uses microorganisms to degrade environmental pollutants.", "note": "利用生物体清除污染物的环境修复技术"}, {"word": "phytoremediation", "ph": "/ˌfaɪtəʊrɪˌmiːdiˈeɪʃn/", "df": "植物修复", "ex": "Phytoremediation uses plants to absorb heavy metals from contaminated soil.", "note": "利用植物去除环境中污染物的绿色修复技术"}, {"word": "wastewater treatment", "ph": "/ˈweɪstwɔːtə(r) ˈtriːtmənt/", "df": "污水处理", "ex": "Advanced wastewater treatment removes nutrients and emerging contaminants.", "note": "去除废水中污染物的多级处理过程"}, {"word": "microplastics", "ph": "/ˈmaɪkrəʊˌplæstɪks/", "df": "微塑料", "ex": "Microplastics have been found in oceans, rivers, and even human blood.", "note": "直径小于5毫米的塑料碎片"}, {"word": "air pollution", "ph": "/eə(r) pəˈluːʃn/", "df": "空气污染", "ex": "PM2.5 is the most concerning air pollutant for human health.", "note": "大气中有害物质浓度达到危害程度的污染现象"}]}, {"theme": "航空航天工程 (Aerospace Engineering)", "words": [{"word": "aerodynamics", "ph": "/ˌeərəʊdaɪˈnæmɪks/", "df": "空气动力学", "ex": "Computational fluid dynamics simulates aerodynamic performance.", "note": "研究物体在空气中运动的科学"}, {"word": "propulsion system", "ph": "/prəˈpʌlʃn ˈsɪstəm/", "df": "推进系统", "ex": "The rocket's propulsion system generates thrust for launch.", "note": "产生推动力使飞行器运动的系统"}, {"word": "reentry", "ph": "/riːˈentri/", "df": "再入大气层", "ex": "Reentry vehicles must withstand temperatures exceeding 2000°C.", "note": "航天器从太空返回大气层的过程"}, {"word": "payload fairing", "ph": "/ˈpeɪləʊd ˈfeərɪŋ/", "df": "整流罩", "ex": "The payload fairing protects the satellite during launch.", "note": "火箭顶部的保护罩，保护有效载荷"}, {"word": "thermal protection", "ph": "/ˈθɜːml prəˈtekʃn/", "df": "热防护", "ex": "Thermal protection systems shield spacecraft from extreme heat.", "note": "保护飞行器免受高温损伤的技术"}]}, {"theme": "生物医学工程 (Biomedical Engineering)", "words": [{"word": "biocompatibility", "ph": "/ˌbaɪəʊkəmˌpætəˈbɪləti/", "df": "生物相容性", "ex": "Biocompatibility testing ensures materials do not harm living tissue.", "note": "材料与生物系统相容而不引起有害反应的能力"}, {"word": "tissue engineering", "ph": "/ˈtɪʃuː ˌendʒɪˈnɪərɪŋ/", "df": "组织工程", "ex": "Tissue engineering combines scaffolds, cells, and growth factors.", "note": "利用工程学原理修复或替代人体组织"}, {"word": "scaffold", "ph": "/ˈskæfəʊld/", "df": "支架", "ex": "Biodegradable scaffolds provide temporary support for tissue regeneration.", "note": "用于支持细胞生长和组织形成的三维结构"}, {"word": "implantable device", "ph": "/ɪmˈplɑːntəbl dɪˈvaɪs/", "df": "植入式设备", "ex": "Implantable devices include pacemakers, stents, and neural stimulators.", "note": "植入体内的医疗电子或机械装置"}, {"word": "biosensor", "ph": "/ˈbaɪəʊsensə(r)/", "df": "生物传感器", "ex": "Continuous glucose monitors are the most widely used biosensors.", "note": "将生物识别信号转换为可测量电信号的传感装置"}]}, {"theme": "综合工程前沿 (Frontiers of Engineering — Comprehensive Review)", "words": [{"word": "interdisciplinary", "ph": "/ˌɪntəˈdɪsɪplɪnəri/", "df": "跨学科的", "ex": "Modern engineering challenges require interdisciplinary collaboration.", "note": "跨越多个学科领域的综合方法"}, {"word": "convergence", "ph": "/kənˈvɜːdʒəns/", "df": "汇聚/融合", "ex": "Technological convergence of AI, biotech, and materials is accelerating innovation.", "note": "多种技术或学科趋于融合的趋势"}, {"word": "translational", "ph": "/trænsˈleɪʃənl/", "df": "转化/应用的", "ex": "Translational research bridges the gap between lab discoveries and practical applications.", "note": "将基础研究成果转化为实际应用的"}, {"word": "paradigm shift", "ph": "/ˈpærədaɪm ʃɪft/", "df": "范式转变", "ex": "The AI revolution represents a paradigm shift in engineering methodology.", "note": "根本性的思维和实践模式变革"}, {"word": "resilience", "ph": "/rɪˈzɪliəns/", "df": "韧性/恢复力", "ex": "Engineering resilience ensures systems withstand and recover from disruptions.", "note": "系统抵御和从冲击中恢复的能力"}]}];</script>
+<script>
+// ===== 数据配置 =====
+var BASE_DATE = new Date(2026, 9, 19); // 2026-10-19 起始 主题index 0
+var THEMES = window.VOCAB;              // 内嵌题库 daily_vocab.js
+var WRONG_KEY = 'lj_wrong_v1';          // localStorage 错题键
+var DONE_KEY  = 'lj_done_v1';           // localStorage 今日完成键
+
+// ===== 工具函数 =====
+function todayKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+// 基于日历日(UTC归一化)的天数差，避免本地时区毫秒偏移
+function dayIndex(d){ return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000); }
+function daysBetween(a,b){ return dayIndex(b)-dayIndex(a); }
+function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
+
+// 当天主题：以起始日为 index0，每天后移一个主题，30 个循环
+function todayThemeInfo(){
+  var now = new Date();
+  var idx = ((daysBetween(BASE_DATE, now) % THEMES.length)+THEMES.length)%THEMES.length;
+  var dayNum = idx+1;
+  return { idx:idx, dayNum:dayNum, theme:THEMES[idx], dateKey:todayKey(now) };
+}
+
+// 从主题生成题目：例句含词->挖空选词；不含->释义匹配
+function buildQuestions(theme, count){
+  var words = theme.words.slice(0, count);
+  var qs = [];
+  words.forEach(function(w){
+    var stem = null, qtype;
+    var ex = w.ex;
+    if (ex && ex.toLowerCase().indexOf(w.word.toLowerCase()) !== -1) {
+      qtype = 'fill';
+      // 把原词（忽略大小写）挖空
+      stem = ex.replace(new RegExp(w.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'ig'), function(){ return '__BLANK__'; });
+    } else {
+      qtype = 'def';           // 释义匹配：给英文词选释义，或给释义选词
+      var mode = Math.random() < 0.5 ? 'word2def' : 'def2word';
+      qtype = mode;
+    }
+    qs.push({ word:w, ex:ex, qtype:qtype, stem:stem });
+  });
+  return qs;
+}
+
+// 生成选项：4个，含正确答案，其余从本主题其他词随机（保证都相近）
+function makeOptions(theme, correctIdx, correctWord){
+  var pool = theme.words.map(function(w,i){return {word:w.word, ph:w.ph, df:w.df, i:i};})
+                .filter(function(x){return x.i!==correctIdx;});
+  pool = shuffle(pool);
+  var opts = pool.slice(0,3).map(function(x){return {word:x.word, ph:x.ph, df:x.df};});
+  opts.push({word:correctWord.word, ph:correctWord.ph, df:correctWord.df});
+  return shuffle(opts);
+}
+
+// ===== 错题记录管理 ====
+function loadWrong(){ try{ return JSON.parse(localStorage.getItem(WRONG_KEY))||{}; }catch(e){ return {}; } }
+function saveWrong(w){ localStorage.setItem(WRONG_KEY, JSON.stringify(w)); }
+function loadDone(){ try{ return JSON.parse(localStorage.getItem(DONE_KEY))||{}; }catch(e){ return {}; } }
+function saveDone(d){ localStorage.setItem(DONE_KEY, JSON.stringify(d)); }
+// 错题 key 格式: "主题idx:indexinwords"
+function wrongKey(ti, wi){ return ti+':'+wi; }
+
+// ===== 渲染 =====
+var state = { correctSel:{} }; // 每道题的正确答案选项index（用于判定）
+
+function renderReview(){
+  var w = loadWrong();
+  var now = new Date();
+  var nowKey = todayKey(now);
+  var due = [];
+  for (var k in w){ if (w.hasOwnProperty(k)){
+    var parts = k.split(':');
+    var ti = parseInt(parts[0]), wi = parseInt(parts[1]);
+    var firstWrong = new Date(w[k]);
+    var diff = daysBetween(firstWrong, now);
+    if (diff >= 7){
+      due.push({key:k, ti:ti, wi:wi, firstWrong:w[k], diff:diff});
+    }
+  }}
+  var box = document.getElementById('reviewBox');
+  if (due.length === 0){
+    box.innerHTML = '<div class="review"><h2>🔁 错题复习</h2><div class="empty">暂无到期错题。今天或这7天内做错的题，7天后会自动到这里重新出现 ⏳</div></div>';
+    return;
+  }
+  var html = '<div class="review"><h2>🔁 错题复习（7天到期 · '+due.length+'题）</h2><div class="cnt">以下题目已经过去7天，重新做一遍巩固：</div><div id="reviewQs"></div>';
+  html += '<div class="btnrow"><button class="btn" onclick="submitReview()">提交复习</button></div><div id="reviewResult"></div></div>';
+  box.innerHTML = html;
+  var rc = document.getElementById('reviewQs');
+  rc.innerHTML = '';
+  // 渲染每题
+  due.forEach(function(d){
+    var theme = THEMES[d.ti];
+    var wd = theme.words[d.wi];
+    var opts = makeOptions(theme, d.wi, wd);
+    // 记录正确选项
+    var correctIdx = -1;
+    for (var i=0;i<opts.length;i++) if (opts[i].word===wd.word) correctIdx=i;
+    state['r_'+d.key] = correctIdx;
+    var card = document.createElement('div');
+    card.className='q'; card.dataset.key=d.key;
+    var stem = wd.ex;
+    var st = stem ? stem.replace(new RegExp(wd.word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'ig'),function(){return '<span class="blank">______</span>';})
+                   : '<span style="color:#7a4fd0">该词释义：</span>'+wd.df;
+    var ohtml = '';
+    opts.forEach(function(o,j){
+      ohtml += '<button class="opt" data-val="'+o.word+'" onclick="revSel(this,\''+d.key+'\','+j+')"><span class="k">'+String.fromCharCode(65+j)+'</span>'+o.word+' <span style="color:#8a94ab">'+o.df+'</span></button>';
+    });
+    card.innerHTML = '<div class="qtype">🔁 错题复习 · '+wd.ph+'</div><div class="qstem">'+st+'</div>'+ohtml;
+    rc.appendChild(card);
+  });
+}
+
+function revSel(el, key, j){
+  var q = el.closest('.q');
+  if (q.classList.contains('locked')) return;
+  q.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
+  q.dataset.sel = j;
+}
+
+function submitReview(){
+  var w = loadWrong();
+  var now = new Date();
+  var nowKey = todayKey(now);
+  var qs = document.querySelectorAll('#reviewQs .q');
+  var score=0, total=qs.length;
+  qs.forEach(function(q){
+    var key = q.dataset.key;
+    var correct = state['r_'+key];
+    var sel = q.dataset.sel;
+    q.classList.add('locked');
+    var optEls = q.querySelectorAll('.opt');
+    optEls.forEach(function(o,j){
+      if (j===correct) o.classList.add('right');
+      else if (String(j)===sel) o.classList.add('wrong');
+    });
+    // 反馈
+    var theme = THEMES[parseInt(key.split(':')[0])];
+    var wd = theme.words[parseInt(key.split(':')[1])];
+    var fb = document.createElement('div');
+    if (String(sel)===String(correct)){ score++; fb.className='fb ok'; fb.innerHTML='<b>✅ 答对</b>'+wd.word+' — '+wd.df;
+      // 答对：从错题表删除
+      delete w[key];
+    } else { fb.className='fb no'; fb.innerHTML='<b>❌ 答错，7天后会再次复习</b>正确：'+wd.word+'（'+wd.df+'）<br>'+(wd.note||'');
+      // 答错：重置日期为今天，7天后再来
+      w[key] = nowKey;
+    }
+    q.appendChild(fb);
+  });
+  saveWrong(w);
+  var rr = document.getElementById('reviewResult');
+  rr.className='result '+(score===total?'good':'bad');
+  rr.innerHTML = '<div class="big">'+score+' / '+total+'</div><div class="txt">'+ (score===total?'🎉 全部巩固完成，错题清理成功！':'仍需巩固 '+ (total-score) +' 题，7天后会自动再来。') +'</div>';
+  // 刷新复习区（清空已删除的）
+  setTimeout(function(){ renderReview(); }, 1800);
+}
+
+// ===== 今日做题渲染 =====
+function renderToday(){
+  var info = todayThemeInfo();
+  state = {};
+  document.getElementById('todayInfo').textContent = '今天 '+info.dateKey+' · 第 '+info.dayNum+' 组相近词';
+  document.getElementById('dayLabel').textContent = info.theme.theme + '（'+todayKey(new Date())+'）';
+  var qs = buildQuestions(info.theme, 5);
+  var box = document.getElementById('questions');
+  box.innerHTML='';
+  qs.forEach(function(q, qi){
+    var opts = makeOptions(info.theme, qi, q.word);
+    var correctIdx=-1;
+    for(var i=0;i<opts.length;i++) if(opts[i].word===q.word.word) correctIdx=i;
+    state[qi] = correctIdx;
+    var card = document.createElement('div');
+    card.className='q'; card.dataset.qi=qi;
+    var st;
+    if (q.qtype==='fill'){
+      st = q.stem.replace('__BLANK__','<span class="blank">______</span>');
+    } else {
+      st = q.qtype==='def2word' ? '<span style="color:#2c5fd0">选出与释义对应的单词：</span><br>'+q.word.df
+                                : '<span style="color:#2c5fd0">选出与「'+q.word.word+'」相符的释义：</span>';
+    }
+    var ohtml='';
+    opts.forEach(function(o,j){
+      var disp;
+      if (q.qtype==='def2word') disp = o.word+' <span style="color:#8a94ab">'+o.ph+'</span>';
+      else if (q.qtype==='word2def') disp = o.df;
+      else disp = o.word+' <span style="color:#8a94ab">'+o.df+'</span>';
+      ohtml += '<button class="opt" data-val="'+o.word+'" onclick="todaySel(this,'+qi+','+j+')"><span class="k">'+String.fromCharCode(65+j)+'</span>'+disp+'</button>';
+    });
+    var typeLabel = {'fill':'📝 选词填空','def2word':'🔤 释义→单词','word2def':'📖 单词→释义'}[q.qtype];
+    card.innerHTML = '<div class="qtype">'+typeLabel+' · '+q.word.ph+'</div><div class="qstem">'+(st||'')+'</div>'+ohtml;
+    box.appendChild(card);
+  });
+}
+
+function todaySel(el, qi, j){
+  var card = el.closest('.q');
+  if (card.classList.contains('locked')) return;
+  card.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');});
+  el.classList.add('sel');
+  card.dataset.sel = j;
+}
+
+function submit(){
+  var info = todayThemeInfo();
+  var w = loadWrong();
+  var done = loadDone();
+  var qs = document.querySelectorAll('#questions .q');
+  var score=0, total=qs.length;
+  var answered=true;
+  qs.forEach(function(q){
+    if (q.dataset.sel===undefined) answered=false;
+  });
+  if(!answered){ alert('请先完成所有 5 道题再提交哦～'); return; }
+  var allRight=true;
+  qs.forEach(function(q){
+    var qi = q.dataset.qi;
+    var correct = state[qi];
+    var sel = q.dataset.sel;
+    q.classList.add('locked');
+    q.querySelectorAll('.opt').forEach(function(o,j){
+      if (j===correct) o.classList.add('right');
+      else if (String(j)===sel) o.classList.add('wrong');
+    });
+    var theme = info.theme;
+    var wd = theme.words[qi];
+    var fb = document.createElement('div');
+    if (String(sel)===String(correct)){ score++; fb.className='fb ok'; fb.innerHTML='<b>✅ 答对</b>'+wd.word+' — '+wd.df;
+      // 若今天曾在错题表，答对可清掉
+      var k = wrongKey(info.idx, qi);
+      if (w[k]) { delete w[k]; }
+    } else { allRight=false; fb.className='fb no'; fb.innerHTML='<b>❌ 答错</b>正确：'+wd.word+'（'+wd.df+'）<br><span style="color:#146a45">辨析：'+(wd.note||'')+'</span> <br>7天后本词会出现在错题复习区。';
+      // 记录错题（若已存在则保留原首次日期）
+      var k = wrongKey(info.idx, qi);
+      if (!w[k]) w[k] = todayKey(new Date());
+    }
+    q.appendChild(fb);
+  });
+  saveWrong(w);
+  done[info.dateKey] = {score:score, total:total};
+  saveDone(done);
+  var r = document.getElementById('result');
+  r.className='result '+(score===total?'good':'bad');
+  var msg = score===total ? '🎉 满分！全部答对，今天的5词已掌握！' : (score>=4?'👍 很不错！只错 '+ (total-score) +' 题，7天后会再复习。':'💪 继续加油，错了 '+ (total-score) +' 题，7天后会再复习巩固。');
+  r.innerHTML = '<div class="big">'+score+' / '+total+'</div><div class="txt">'+msg+'</div>';
+}
+
+function resetToday(){
+  document.getElementById('questions').innerHTML='';
+  document.getElementById('result').innerHTML='';
+  renderToday();
+}
+
+// ===== 启动 =====
+renderToday();
+renderReview();
+</script>
+</body>
+</html>
